@@ -1,0 +1,36 @@
+html {
+    text-align: center;
+    font-family: Helvetica, Arial, Helvetica, sans-serif;
+    background-color: aqua;
+}
+
+#board div {
+    background-color: black;
+    border: 1px solid grey;
+    box-sizing: border-box;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-bottom: -4px; /* notwendig sonst ist Space zwischen den Zeilen*/
+}
+
+#board {
+    width: calc(26 * 24px);
+    margin: auto;
+    float: left;
+}
+
+#board .snake {
+    background-color: aqua;
+}
+
+#board .food {
+    background-color: red;
+}
+
+#infoBoard {
+    width: 200px;
+    height: 379px;
+    float: left;
+    background-color: black;
+}

@@ -1,4 +1,41 @@
 
+for (var y = 0; y < boardHeight; ++y) {
+    for (var x= 0; x < boardWidth; ++x) {
+        var cell = board[y][x];
+        console.log('cell',cell)
+
+        if (cell.snake > 0) {
+             cell.element.className = "snake";
+                cell.snake -= 1;
+            } else if (cell.food > 0) {
+            cell.element.className = "food";
+            } else if(cell.snake > 0 && cell.food > 0){
+                cell.food -= 1;
+            } else {
+                cell.element.className = "";
+            }
+    }
+}
+
+switch (){
+    case (cell.snake > 0):
+        cell.element.className = "snake";
+        cell.snake -= 1;
+        break;
+            
+    case (cell.food > 0):
+        cell.element.className = "food";
+        break;
+
+    case (cell.snake > 0 && cell.food > 0):
+        cell.food -= 1;
+        break;
+    default:
+        cell.element.className = "";
+}
+
+/*
+
 // Matrix - Board für das Spiel 
 const board = [];
 const boardWidth = 26;
@@ -44,10 +81,9 @@ function startGame() {
     snakeY = Math.floor(boardHeight / 2);
     snakeLength = 4;
     snakeDirection = "Right";
-    //snakeFoodX = Math.floor(Math.random()* boardWidth);
-    //snakeFoodY = Math.floor(Math.random()* boardHeight);
-    snakeFoodX = 20 ;
-    snakeFoodY = 8;
+    snakeFoodX = Math.floor(Math.random()* boardWidth);
+    snakeFoodY = Math.floor(Math.random()* boardHeight);
+
 
     for (var y = 0; y < boardHeight; ++y){
         for (var x = 0; x < boardWidth; ++x) {
@@ -57,7 +93,6 @@ function startGame() {
     }
 
     board[snakeY][snakeX].snake = snakeLength;
-    // board[snakeY][snakeX].snake = 1;
     board[snakeFoodY][snakeFoodX].food = 1;
 }
 
@@ -83,26 +118,23 @@ function gameLoop() {
     for (var y = 0; y < boardHeight; ++y) {
         for (var x= 0; x < boardWidth; ++x) {
             var cell = board[y][x];
-            //console.log(cell);
+           
     
             if (cell.snake > 0) {
-                    cell.element.className = "snake";
+                 cell.element.className = "snake";
                     cell.snake -= 1;
-                } else if (cell.snake > 0 && cell.food == 1) {
-                    cell.food = 0;
-                    cell.element.className = "snake";
-                } else if (cell.food > 0 && cell.snake == 0) {
-                    console.log('@')                    
-                    snakeLength++;
-                    cell.element.className = "food";
-                }  else {
+                } else if (cell.food > 0) {
+                cell.element.className = "food";
+                } else if(cell.snake > 0 && cell.food > 0){
+                    cell.food -= 1;
+                } else {
                     cell.element.className = "";
-            }
+                }
         }
-      
     }
-    
-    setTimeout(gameLoop, 900 / 5);
+   
+
+    setTimeout(gameLoop, 700 / snakeLength);
 }
 
 
@@ -122,3 +154,5 @@ function enterKey(event) {
 
 
 
+
+*/
