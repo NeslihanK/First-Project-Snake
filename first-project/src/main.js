@@ -1,124 +1,114 @@
-
-// Matrix - Board für das Spiel 
 const board = [];
-const boardWidth = 26;
-const boardHeight = 16;
+    const boardWidth = 26;
+    const boardHeight = 16;
 
-var snakeX;
-var snakeY;
-var snakeLength;
-var snakeDirection;
-var snakeFoodX;
-var snakeFoodY;
-
-
+    var snakeX;
+    var snakeY;
+    var snakeLength;
+    var snakeDirection;
 
 // x und y Achse -> links nach rechts (boardWidth) oben nach unten (boardHeight)
-function gameBoard() {
-    const boardElement = document.getElementById('board');
+    function gameBoard() {
+        const boardElement = document.getElementById('board');
 
-    for (var y = 0; y < boardHeight; ++y){
-        var row = [];
-        for (var x = 0; x < boardWidth; ++x) {
-            var cell = {
-                snake:0,
-                food:0
-            }; //Each cell is defined by an empty object -> gibt den Zustand jeder Zelle wieder
-        
-            cell.element = document.createElement('div');
+        for (var y = 0; y < boardHeight; ++y) {
+            var row = [];
+            for (var x = 0; x < boardWidth; ++x) {
+                var cell = {};
+                
+                cell.element = document.createElement('div');
 
-            boardElement.appendChild(cell.element);
-
-            row.push(cell);
-        
-        }
-        board.push(row);
-    }
-    startGame();
-    gameLoop();
-}
-
-
-function startGame() {
-    snakeX = Math.floor(boardWidth / 2);
-    snakeY = Math.floor(boardHeight / 2);
-    snakeLength = 4;
-    snakeDirection = "Right";
-    //snakeFoodX = Math.floor(Math.random()* boardWidth);
-    //snakeFoodY = Math.floor(Math.random()* boardHeight);
-    snakeFoodX = 20 ;
-    snakeFoodY = 8;
-
-    for (var y = 0; y < boardHeight; ++y){
-        for (var x = 0; x < boardWidth; ++x) {
-            board[y][x].snake = 0; 
-            board[y][x].food = 0;
-        }
-    }
-
-    board[snakeY][snakeX].snake = snakeLength;
-    // board[snakeY][snakeX].snake = 1;
-    board[snakeFoodY][snakeFoodX].food = 1;
-}
-
-
-function gameLoop() {
-
-    switch (snakeDirection) {
-        case "Up": snakeY--; break;
-        case "Down": snakeY++; break;
-        case "Left": snakeX--; break;
-        case "Right": snakeX++; break;
-    }
-
-
-    // Check for walls, and restart if we collide with any
-    if (snakeX < 0 || snakeY < 0 || snakeX >= boardWidth || snakeY >= boardHeight) {
-    startGame()
-    }
-
-    // Update the board at the new snake position
-    board[snakeY][snakeX].snake = snakeLength;
-    // Loop over the entire GameBoard and update every cell
-    for (var y = 0; y < boardHeight; ++y) {
-        for (var x= 0; x < boardWidth; ++x) {
-            var cell = board[y][x];
-            //console.log(cell);
+                boardElement.appendChild(cell.element);
     
-            if (cell.snake > 0) {
-                    cell.element.className = "snake";
-                    cell.snake -= 1;
-                } else if (cell.snake > 0 && cell.food == 1) {
-                    cell.food = 0;
-                    cell.element.className = "snake";
-                } else if (cell.food > 0 && cell.snake == 0) {
-                    console.log('@')                    
-                    snakeLength++;
-                    cell.element.className = "food";
-                }  else {
-                    cell.element.className = "";
+                row.push(cell);
+            }
+            board.push(row);
+        }
+
+        startGame();
+        gameLoop();
+    }
+
+    function placeApple() {
+        var appleX = Math.floor(Math.random() * boardWidth);
+        var appleY = Math.floor(Math.random() * boardHeight);
+
+        board[appleY][appleX].apple = 1;
+    }
+        
+    function startGame() {
+        snakeX = Math.floor(boardWidth / 2);
+        snakeY = Math.floor(boardHeight / 2);
+        snakeLength = 4;
+        snakeDirection = 'right';
+
+        // Clear the board
+        for (var y = 0; y < boardHeight; ++y) {
+            for (var x = 0; x < boardWidth; ++x) {
+                board[y][x].snake = 0;
+                board[y][x].apple = 0;
             }
         }
-      
-    }
-    
-    setTimeout(gameLoop, 900 / 5);
-}
 
+        board[snakeY][snakeX].snake = snakeLength;
 
-function enterKey(event) {
-    switch (event.key) {
-        case 'ArrowUp': snakeDirection = 'Up'; break;
-        case 'ArrowDown': snakeDirection = 'Down'; break;
-        case 'ArrowLeft': snakeDirection = 'Left'; break;
-        case 'ArrowRight': snakeDirection = 'Right'; break;
-        default: return;
+        placeApple();
     }
 
-    // This prevents the arrow keys from scrolling the window
-    event.preventDefault();
-}
+    function gameLoop() {
 
+        switch (snakeDirection) {
+            case 'up':    snakeY--; break;
+            case 'down':  snakeY++; break;
+            case 'left':  snakeX--; break;
+            case 'right': snakeX++; break;
+        }
 
+        if (snakeX < 0 || snakeY < 0 || snakeX >= boardWidth || snakeY >= boardHeight) {
+            startGame();
+        }
 
+        if (board[snakeY][snakeX].snake > 0) {
+            startGame();
+        }
+
+        if (board[snakeY][snakeX].apple === 1) {
+            snakeLength++;
+            board[snakeY][snakeX].apple = 0;
+            placeApple();
+        }
+
+        board[snakeY][snakeX].snake = snakeLength;
+
+        for (var y = 0; y < boardHeight; ++y) {
+            for (var x = 0; x < boardWidth; ++x) {
+                var cell = board[y][x];
+
+                if (cell.snake > 0) {
+                    cell.element.className = 'snake';
+                    cell.snake -= 1;
+                }
+                else if (cell.apple === 1) {
+                    cell.element.className = 'apple';
+                }
+                else {
+                    cell.element.className = '';
+                }
+            }
+        }
+
+        setTimeout(gameLoop, 900 / snakeLength);
+    }
+
+    function enterKey(event) {
+        switch (event.key) {
+            case 'ArrowUp': snakeDirection = 'up'; break;
+            case 'ArrowDown': snakeDirection = 'down'; break;
+            case 'ArrowLeft': snakeDirection = 'left'; break;
+            case 'ArrowRight': snakeDirection = 'right'; break;
+            default: break;
+        }
+
+        event.preventDefault();
+    }
 
