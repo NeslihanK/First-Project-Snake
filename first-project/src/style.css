@@ -11,7 +11,7 @@ html {
     display: inline-block;
     width: 24px;
     height: 24px;
-    margin-bottom: -4px; /* notwendig sonst ist ein Abstand zwischen den Zellen/Zeilen*/
+    margin-bottom: -4px; /* notwendig sonst ist Abstand zwischen den Zellen/Zeilen*/
 }
 
 #board {
@@ -33,4 +33,6 @@ html {
     height: 379px;
     float: left;
     background-color: black;
+    color: white;  
 }
+

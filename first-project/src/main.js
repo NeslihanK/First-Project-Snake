@@ -1,4 +1,4 @@
-const board = [];
+    const board = [];
     const boardWidth = 26;
     const boardHeight = 16;
 
